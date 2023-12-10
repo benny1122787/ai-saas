@@ -4,8 +4,9 @@
 
 2.打開Terminal
 
-3.輸入 npm run dev
+3..env裡面加入 OPENAI_API_KEY 以及 REPLICATE_API_TOKEN
 
-4.使用網頁開啟 http://localhost:3000
+4.輸入 npm run dev
 
-如需使用Conversation，需要到.env裡面加入 OPENAI_API_KEY
+5.使用網頁開啟 http://localhost:3000
+
