@@ -14,12 +14,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
-import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
 import Image from "next/image"
+import { useProModel } from "@/hooks/use-pro-model";
 
 const ImagePage = () => {
+    const proModel = useProModel()
     const router = useRouter();
     const [images, setImages] = useState<string[]>([])
 
@@ -45,7 +46,9 @@ const ImagePage = () => {
             setImages(urls)
             form.reset()
         } catch (error: any) {
-            console.log(error)
+            if (error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh()
         }
@@ -175,7 +178,7 @@ const ImagePage = () => {
                                     />
                                 </div>
                                 <CardFooter className="p-2">
-                                    <Button onClick={()=>window.open(src)} variant="secondary" className="w-full">
+                                    <Button onClick={() => window.open(src)} variant="secondary" className="w-full">
                                         <Download className="h-4 w-4 mr-2" />
                                         Download
                                     </Button>

@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown"
+import { useProModel } from "@/hooks/use-pro-model";
 
 function renderContent(content: ChatCompletionContentPart): React.ReactNode {
     if (content.type === 'text') {
@@ -30,6 +31,7 @@ function renderContent(content: ChatCompletionContentPart): React.ReactNode {
 }
 
 const CodePage = () => {
+    const proModel = useProModel()
     const router = useRouter();
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([])
 
@@ -55,7 +57,9 @@ const CodePage = () => {
             setMessages((current) => [...current, userMessage, response.data])
             form.reset()
         } catch (error: any) {
-            console.log(error)
+            if (error?.response?.status === 403) {
+                proModel.onOpen()
+            }
         } finally {
             router.refresh()
         }
