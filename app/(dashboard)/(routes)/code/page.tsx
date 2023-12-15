@@ -20,6 +20,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown"
 import { useProModel } from "@/hooks/use-pro-model";
+import toast from "react-hot-toast";
 
 function renderContent(content: ChatCompletionContentPart): React.ReactNode {
     if (content.type === 'text') {
@@ -59,6 +60,8 @@ const CodePage = () => {
         } catch (error: any) {
             if (error?.response?.status === 403) {
                 proModel.onOpen()
+            } else {
+                toast.error("Something went wrong")
             }
         } finally {
             router.refresh()
